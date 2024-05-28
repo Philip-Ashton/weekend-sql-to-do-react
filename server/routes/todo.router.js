@@ -46,7 +46,42 @@ router.post('/', function (request, response) {
 
 
 // PUT
+router.put('/:id', function (request, response) {
+    console.log()
+    let idToUpdate = request.params.id;
+    let queryText = `UPDATE "todoapp" WHERE id = $1, $2`;
+    pool.query(queryText, [idToUpdate])
+        .then(dbResult => {
+            console.log(dbResult);
+            response.sendStatus(200);
+        })
+        .catch(dbError => {
+            console.log(dbError);
+            response.sendStatus(500);
+        })
+});
 
 // DELETE
+router.delete('/:id', function (request, response) {
+   
+    console.log('req.params', request.params);
+
+    let idToDelete = request.params.id;
+
+    console.log('idToDelete', idToDelete);
+    console.log('typeof idToDelete', typeof idToDelete);
+
+    let queryText = `DELETE FROM "todoapp" WHERE id = $1;`;
+
+    pool.query(queryText, [idToDelete])
+        .then(dbResult => {
+            console.log(dbResult);
+            response.sendStatus(200);
+        })
+        .catch(dbError => {
+            console.log(dbError);
+            response.sendStatus(500);
+        })
+});
 
 module.exports = router;
